@@ -1,0 +1,11 @@
+.singleBook {
+    text-align: center; 
+}
+
+.singleBook__wrapper_all {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    min-height: 79vh;
+    gap: 60px;
+    text-align: left;
+}
