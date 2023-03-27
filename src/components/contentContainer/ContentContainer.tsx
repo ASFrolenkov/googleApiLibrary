@@ -17,7 +17,7 @@ const ContentContainer:React.FC<IContentProps> = ({totalItems, statusLoading}) =
     const {numberResults, tabIndex} = useStoreSelector(state => state.fetchReducer)
 
     const clickEvent = () => {
-        //Условие, если количество результатов минус нынещний tabIndex больше заданного шага пагинации, то прибавляем tabIndex
+        //Условие, если количество результатов минус нынещный tabIndex больше заданного шага пагинации, то прибавляем tabIndex
         if (maxResults - tabIndex > numberResults) {
             dispatch(addTabIndex());
         }
