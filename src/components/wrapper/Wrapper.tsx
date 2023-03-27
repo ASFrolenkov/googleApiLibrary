@@ -44,5 +44,3 @@ const Wrapper: React.FC = () => {
 }
 
 export default Wrapper;
-
-//при загрузке доп. книг когда tabIndex > maxResults ошибка action.payload
