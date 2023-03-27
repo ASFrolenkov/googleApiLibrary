@@ -1,5 +1,5 @@
 import Card from "../card/Card";
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { useStoreSelector, useStoreDispatch } from "../../store/hooks/hooks";
 import {  addTabIndex } from "../../store/actions/actionsFetch";
 import { Link } from 'react-router-dom'
@@ -14,24 +14,11 @@ const ContentContainer:React.FC<IContentProps> = ({totalItems, statusLoading}) =
     const dispatch = useStoreDispatch();
 
     const {data, maxResults} = useStoreSelector(state => state.stateReducer);
-    const {resetflag, numberResults} = useStoreSelector(state => state.fetchReducer)
-
-    const [localState, setLocalState] = useState(data);
-
-    useEffect(() => {
-        //Если флаг true, то мы перезаписываем локальный массив элементов. Иначе добавляем к нему элементы
-        if (resetflag) {
-            setLocalState(data);   
-        } else {
-            setLocalState((state) => [...state, ...data])
-        }
-        
-    }, [data])
+    const {numberResults, tabIndex} = useStoreSelector(state => state.fetchReducer)
 
     const clickEvent = () => {
-        console.log('click');
-        //Если количество результатов больше шага пагинцаии, то добавляем tabIndex
-        if (maxResults > numberResults) {
+        //Условие, если количество результатов минус нынещний tabIndex больше заданного шага пагинации, то прибавляем tabIndex
+        if (maxResults - tabIndex > numberResults) {
             dispatch(addTabIndex());
         }
     }
@@ -42,7 +29,7 @@ const ContentContainer:React.FC<IContentProps> = ({totalItems, statusLoading}) =
             <h2 className="content__title">Found {totalItems} results</h2>
 
             <div className="content__wrapper">
-                {localState.map((elem: any, i: number) => {
+                {data.map((elem: any, i: number) => {
                     return (
                         <Link to={`/singleBook/${elem.id}`} key={i}>
                             <Card data={[elem.volumeInfo, elem.id]}/>
@@ -50,11 +37,15 @@ const ContentContainer:React.FC<IContentProps> = ({totalItems, statusLoading}) =
                     )
                 })}
             </div>
-            
-            {statusLoading === 'pending' ? <button className="content__load">Loading...</button> : <button className="content__load" onClick={() => clickEvent()}>Load more</button>}
+
+            {maxResults - tabIndex > numberResults ? statusLoading === 'pending' ? <button className="content__load">Loading...</button> :
+                                                                                   <button className="content__load" onClick={() => clickEvent()}>Load more</button> : 
+                                                     null}
             
         </>  
     )
 }
 
 export default ContentContainer;
+
+///buildFolder/googleApi

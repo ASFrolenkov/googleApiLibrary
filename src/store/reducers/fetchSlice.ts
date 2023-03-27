@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ILocal } from "../../types/types";
-import { addCategories, addSearch, addOrder, addTabIndex } from "../actions/actionsFetch";
+import { addCategories, addSearch, addOrder, addTabIndex, setTabIndex } from "../actions/actionsFetch";
 
 const initialState: ILocal = {
     tabIndex: 0,
@@ -31,6 +31,10 @@ export const fetchSlice = createSlice({
             })
             .addCase(addTabIndex, (state) => {
                 state.tabIndex += state.numberResults
+                state.resetflag = false
+            })
+            .addCase(setTabIndex, (state, action) => {
+                state.tabIndex = action.payload
                 state.resetflag = false
             })
     }

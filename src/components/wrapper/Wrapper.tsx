@@ -4,7 +4,7 @@ import SingleBook from "../singleBook/SingleBook";
 import Content from "../content/Content";
 import { useStoreSelector, useStoreDispatch } from '../../store/hooks/hooks';
 import { ILocal } from '../../types/types';
-import { changeMaxResults, setData } from '../../store/actions/actionState';
+import { addDataToState, changeMaxResults, setData } from '../../store/actions/actionState';
 import { googleLibApi } from '../../services/bookService';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ const Wrapper: React.FC = () => {
 
     // Получение state из storage
     const localState: ILocal = useStoreSelector(state => state.fetchReducer)
+    const {resetflag} = useStoreSelector(state => state.fetchReducer)
 
     //RTK Query, ответ запроса
     const {data, isLoading, isError, status} = googleLibApi.useFetchBooksQuery(localState);
@@ -20,7 +21,11 @@ const Wrapper: React.FC = () => {
     //Отправка в stateSlice
     useEffect(() => {
         if (!isLoading && !isError) {
-            dispatch(setData(data.items));
+            if (resetflag) {
+                dispatch(setData(data.items));
+            } else {
+                dispatch(addDataToState(data.items));
+            }  
             dispatch(changeMaxResults(data.totalItems));
         }
     }, [data])
@@ -39,3 +44,5 @@ const Wrapper: React.FC = () => {
 }
 
 export default Wrapper;
+
+//при загрузке доп. книг когда tabIndex > maxResults ошибка action.payload

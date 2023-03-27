@@ -28,4 +28,10 @@ const setTrueResetFlag = createAction('state/setTrueResetFlag');
 
 const setFalseResetFlag = createAction('state/setFalseResetFlag');
 
-export {addSearch, addCategories, addOrder, addTabIndex, setTrueResetFlag, setFalseResetFlag};
+const setTabIndex = createAction('state/setTabIndex', (tabIndex: number) => {
+    return {
+        payload: tabIndex
+    }
+})
+
+export {addSearch, addCategories, addOrder, addTabIndex, setTrueResetFlag, setFalseResetFlag, setTabIndex};
