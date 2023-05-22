@@ -1,3 +1,3 @@
-# googleApiLibrary на GitHub Pages
+# googleApiLibrary
 
-https://asfrolenkov.github.io/buildFolder/googleApi/
+https://googlelibraryapp.netlify.app/
